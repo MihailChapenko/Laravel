@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<!-- Add Client Modal -->
+<!-- edit Client Modal -->
 <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="modalCenter" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -54,6 +54,7 @@
             </div>
             <div class="modal-body">
                 <input id="clientId" type="hidden">
+                <input id="editClientAdminId" type="hidden">
                 <div id="editClientNameDiv" class="form-group">
                     <label for="editClientName">Name</label>
                     <input type="text" class="form-control modal-input" id="editClientName">

@@ -44,16 +44,28 @@ class User extends Authenticatable
     {
         if(Auth::id() === 1)
         {
-            return User::where('id', '!=', 1)->get();
+            return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
+                        ->select('users.id', 'users.name', 'users.email', 'users_profile.isAdmin')
+                        ->where('users.id', '!=', 1)->get();
         }
         return User::join('users_to_client', 'users_to_client.user_id', '=', 'users.id')
-                    ->select('users.id', 'users.name', 'users.email')
+                    ->join('users_profile', 'users_profile.user_id', '=', 'users.id')
+                    ->select('users.id', 'users.name', 'users.email', 'users_profile.isAdmin')
                     ->where('users_to_client.admin_id', '=', Auth::id())->get();
+    }
+
+    public function findAdmin($id)
+    {
+        return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
+            ->select('users_profile.client_id')
+            ->where('users.id', '=', $id)->first();
     }
 
     public function getAvailibleAdmins()
     {
-        return User::select('users.id', 'users.email')
+        return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
+            ->select('users.id', 'users.email')
+            ->where('users.id', '!=', 1)
             ->where('isAdmin', '=', 1)
             ->where('client_id', '=', 0)->get();
     }

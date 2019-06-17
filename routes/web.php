@@ -21,6 +21,10 @@ Route::domain(env('APP_URL'))->middleware('auth')->group(function() {
     Route::post('/find_user', 'User\User\UserController@findUser');
     Route::post('/edit_user', 'User\User\UserController@editUser');
     Route::delete('/delete_user', 'User\User\UserController@deleteUser');
+    Route::post('/change_password', 'User\User\UserController@changePassword');
+    Route::get('/profile', 'User\Profile\ProfileController@index');
+    Route::post('/update_profile', 'User\Profile\ProfileController@updateProfile');
+
 
     Route::get('/clients', 'User\Client\ClientController@index');
     Route::get('/get_clients_list', 'User\Client\ClientController@getClientsList');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User\User;
 
+use App\Http\Requests\ChangeUserPassRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -12,16 +13,21 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\AddUserRequest;
 use App\Http\Requests\EditUserRequest;
 use Illuminate\Support\Facades\Validator;
-use App\EloquentModel\UserToClient as Relations;
+use App\EloquentModel\{
+    UserProfile as Profile,
+    UserToClient as Relations
+};
 
 class UserController extends Controller
 {
     private $user;
+    private $profile;
     private $relations;
 
-    public function __construct(User $user, Relations $relations)
+    public function __construct(User $user, Relations $relations, Profile $profile)
     {
         $this->user = $user;
+        $this->profile = $profile;
         $this->relations = $relations;
     }
 
@@ -37,7 +43,7 @@ class UserController extends Controller
         $users = $this->user->getUsersList();
 
         return DataTables::of($users)->setRowClass(
-            ('{{$isAdmin ? "admin user-info" : "user-info"}}' )
+            ( '{{$isAdmin ? "admin user-info" : "user-info"}}' )
         )->setRowAttr([
             'id-user' => '{{$id}}',
         ])->toJson();
@@ -52,6 +58,8 @@ class UserController extends Controller
 
     public function addUser(AddUserRequest $request)
     {
+        $admin = $this->user->findAdmin(Auth::id());
+
         $data = [
           'name' => $request->input('userName'),
           'email' => $request->input('userEmail'),
@@ -67,16 +75,16 @@ class UserController extends Controller
             {
                 $user->givePermissionTo(intval($permission));
             }
-            $user->update(['isAdmin' => true]);
         }
         else
         {
             $relations = [
-                'client_id' => Auth::user()->client_id,
+                'client_id' => $admin->client_id,
                 'admin_id' => Auth::id(),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ];
-            $user->update(['client_id' => Auth::user()->client_id]);
+
+            $this->profile->findProfile($user->id)->update(['client_id' => $admin->client_id]);
             $this->relations->create($relations);
         }
 
@@ -112,7 +120,14 @@ class UserController extends Controller
 
     public function deleteUser(Request $request)
     {
-        User::find($request->input('userId'))->delete();
+        $this->user->find($request->input('userId'))->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function changePassword(ChangeUserPassRequest $request)
+    {
+        $this->user->find($request->input('userId'))->update(['password' => Hash::make($request->input('password'))]);
 
         return response()->json(['success' => true]);
     }

@@ -99,6 +99,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $('#clientId').val(data.client['id']);
+                $('#editClientAdminId').val(data.client['admin_id']);
                 $('#editClientName').val(data.client['name']);
                 $('#editClientModel').val(data.client['model']);
                 $('#editClientTheme').val(data.client['theme']);
@@ -163,7 +164,8 @@ $(document).ready(function () {
     });
 
     $('#deleteClientSubmit').on('click', function() {
-        let clientId = $('#clientId').val();
+        let clientId = $('#clientId').val(),
+            adminId = $('#editClientAdminId').val();
 
         Swal.fire({
             title: 'Are you sure?',
@@ -179,7 +181,8 @@ $(document).ready(function () {
                     type: 'delete',
                     url: 'delete_client',
                     data: {
-                        clientId: clientId
+                        clientId: clientId,
+                        adminId: adminId
                     },
                     error: function(error) {
                         Swal.fire({

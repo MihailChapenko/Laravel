@@ -12,18 +12,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EditUserRequest;
 use App\Http\Requests\AddClientRequest;
 use App\Http\Requests\EditClientRequest;
-use App\EloquentModel\UserToClient as Relations;
+use App\EloquentModel\{
+    UserProfile as Profile,
+    UserToClient as Relations
+};
 
 class ClientController extends Controller
 {
     private $user;
     private $client;
+    private $profile;
     private $relations;
 
-    public function __construct(User $user, Client $client, Relations $relations)
+    public function __construct(User $user, Client $client, Relations $relations, Profile $profile)
     {
         $this->user = $user;
         $this->client = $client;
+        $this->profile = $profile;
         $this->relations = $relations;
     }
 
@@ -42,6 +47,7 @@ class ClientController extends Controller
             'client-info'
         )->setRowAttr([
             'id-client' => '{{$id}}',
+            'id-admin' => '{{$admin_id}}'
         ])->toJson();
     }
 
@@ -54,6 +60,7 @@ class ClientController extends Controller
 
     public function addClient(AddClientRequest $request)
     {
+
         $clientData = [
             'admin_id' => $request->input('adminId'),
             'name' => $request->input('clientName'),
@@ -63,8 +70,7 @@ class ClientController extends Controller
         ];
 
         $this->client->create($clientData);
-
-        $this->user->find($request->input('adminId'))->update(['client_id' => $request->input('adminId')]);
+        $this->profile->findProfile($request->input('adminId'))->update(['client_id' => $request->input('adminId')]);
 
         return response()->json(['success' => true]);
     }
@@ -86,6 +92,7 @@ class ClientController extends Controller
     public function deleteClient(Request $request)
     {
         $this->client->find($request->input('clientId'))->delete();
+        $this->profile->findProfile($request->input('adminId'))->update(['client_id' => 0]);
 
         return response()->json(['success' => true]);
     }

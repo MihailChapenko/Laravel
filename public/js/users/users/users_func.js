@@ -95,9 +95,6 @@ $(document).ready(function () {
                 $('#editUserId').val(data.user['id']);
                 $('#editUserName').val(data.user['name']);
                 $('#editUserEmail').val(data.user['email']);
-                // $.each(data.permissions, function (index, value) {
-                //     $("#adminPermissions option [permission-id='${value.id}']").attr('selected', 'selected');
-                // });
                 $('#editUserModal').modal('show');
             }
         });

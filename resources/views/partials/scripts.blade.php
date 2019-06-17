@@ -21,6 +21,7 @@
 
 {{--User--}}
 <script src="{{ asset('js/users/users/users_func.js') }}" defer></script>
+<script src="{{ asset('js/users/users/user_profile_func.js') }}" defer></script>
 
 {{--Client--}}
 <script src="{{ asset('js/users/clients/clients_func.js') }}" defer></script>
