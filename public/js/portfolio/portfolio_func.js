@@ -1,45 +1,48 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
-    let usersList = $('#usersList').DataTable({
+    let portfilioList = $('#portfolioList').DataTable({
         // responsive: true,
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'get_users_list',
+            url: 'get_portfolio_list',
             type: 'get'
         },
         columns: [
             {data: 'id', className: "dt-center", "targets": "_all"},
             {data: 'name', className: "dt-center", "targets": "_all"},
-            {data: 'email', className: "dt-center", "targets": "_all"},
+            {data: 'description', className: "dt-center", "targets": "_all"},
+            {data: 'allocation_min', className: "dt-center", "targets": "_all"},
+            {data: 'allocation_max', className: "dt-center", "targets": "_all"},
+            {data: 'isActive', className: "dt-center", "targets": "_all"},
         ],
     });
 
-    $('#addUser').on('click', function () {
-        $('#addUserModal').modal('show');
+    $('#addPortfolio').on('click', function() {
+        $('#addPortfolioModal').modal('show');
     });
 
-    $('#addUserSubmit').on('click', function () {
+    $('#addPortfolioSubmit').on('click', function() {
         clearValidation();
-        let adminPermissions = [];
-        let userName = $('#userName').val(),
-            userEmail = $('#userEmail').val(),
-            userPass = $('#userPass').val();
-
-        $.each($('#adminPermissions option:selected'), function(){
-            adminPermissions.push($(this).attr('permission-id'));
-        });
+        let portfolioName = $('#portfolioName').val(),
+            portfolioDescription = $('#portfolioDescription').val(),
+            portfolioCurrency = $('#portfolioCurrency').val(),
+            portfolioAllocationMax = $('#portfolioAllocationMax').val(),
+            portfolioAllocationMin = $('#portfolioAllocationMin').val(),
+            portfolioSortOrder = $('#portfolioSortOrder').val();
 
         $.ajax({
             type: 'post',
-            url: 'add_user',
+            url: 'add_portfolio',
             data: {
-                userName: userName,
-                userEmail: userEmail,
-                adminPermissions: adminPermissions,
-                userPass: userPass
+                portfolioName: portfolioName,
+                portfolioDescription: portfolioDescription,
+                portfolioCurrency: portfolioCurrency,
+                portfolioAllocationMax: portfolioAllocationMax,
+                portfolioAllocationMin: portfolioAllocationMin,
+                portfolioSortOrder: portfolioSortOrder
             },
-            error: function (error) {
+            error: function(error) {
                 if (error.responseJSON.errors) {
                     let errors = error.responseJSON.errors;
                     $.each(errors, function (index, value) {
@@ -54,7 +57,7 @@ $(document).ready(function () {
                     })
                 }
             },
-            success: function (data) {
+            success: function(data) {
                 if (data.success === true) {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -67,70 +70,72 @@ $(document).ready(function () {
                         type: 'success',
                         title: 'Created successfully'
                     });
-                    $('#addUserModal').modal('hide');
+                    $('#addPortfolioModal').modal('hide');
                     clearModalInput();
-                    usersList.ajax.reload();
+                    portfilioList.ajax.reload();
                 }
             }
-        });
+        })
     });
 
-    $('#usersList').on('dblclick', '.user-info', function () {
-        let userId = $(this).attr('id-user');
+    $('#portfolioList').on('dblclick', '.portfolio-info', function () {
+        let portfolioId = $(this).attr('id-portfolio');
 
         $.ajax({
             type: 'post',
-            url: 'find_user',
+            url: 'find_portfolio',
             data: {
-                userId: userId
+                portfolioId: portfolioId
             },
-            error: function (error) {
+            error: function(error) {
                 Swal.fire({
                     title: 'Something went wrong!',
                     text: 'Please, reload the page.',
                     type: 'error',
                 })
             },
-            success: function (data) {
-                console.log(data.user);
-                $('#editUserId').val(data.user['id']);
-                $('#editUserName').val(data.user['name']);
-                $('#editUserEmail').val(data.user['email']);
-                (data.user['isActive'] === 1) ? $('#isActive').prop('checked', true) : '';
-                $('#editUserModal').modal('show');
+            success: function(data) {
+                $('#editPortfolioId').val(data.portfolio['id']);
+                $('#editPortfolioName').val(data.portfolio['name']);
+                $('#editPortfolioDescription').val(data.portfolio['description']);
+                $('#editPortfolioCurrency').val(data.portfolio['currency']);
+                $('#editPortfolioAllocationMax').val(data.portfolio['allocation_max']);
+                $('#editPortfolioAllocationMin').val(data.portfolio['allocation_min']);
+                $('#editPortfolioSortOrder').val(data.portfolio['sort_order']);
+                (data.portfolio['isActive'] === 1) ? $('#editPortfolioIsActive').prop('checked', true) : '';
+                $('#editPortfolioModal').modal('show');
             }
-        });
+        })
     });
 
-    $('#editUserSubmit').on('click', function () {
+    $('#editPortfolioSubmit').on('click', function() {
         clearValidation();
-        let adminNewPermissions = [];
-        let userId = $('#editUserId').val(),
-            editUserName = $('#editUserName').val(),
-            editUserEmail = $('#editUserEmail').val(),
-            editUserPass = $('#editUserPass').val(),
-            isActive = ($('#isActive').prop('checked')) ? 1 : 0;
-
-        $.each($('#editAdminPermissions option:selected'), function(){
-            adminNewPermissions.push($(this).attr('permission-id'));
-        });
+        let portfolioId = $('#editPortfolioId').val(),
+            editPortfolioName = $('#editPortfolioName').val(),
+            editPortfolioDescription = $('#editPortfolioDescription').val(),
+            editPortfolioCurrency = $('#editPortfolioCurrency').val(),
+            editPortfolioAllocationMax = $('#editPortfolioAllocationMax').val(),
+            editPortfolioAllocationMin = $('#editPortfolioAllocationMin').val(),
+            editPortfolioSortOrder = $('#editPortfolioSortOrder').val(),
+            editPortfolioIsActive = $('#editPortfolioIsActive').prop('checked');
 
         $.ajax({
             type: 'post',
-            url: 'edit_user',
+            url: 'edit_portfolio',
             data: {
-                userId: userId,
-                adminNewPermissions: adminNewPermissions,
-                editUserName: editUserName,
-                editUserEmail: editUserEmail,
-                editUserPass: editUserPass,
-                isActive: isActive
+                portfolioId: portfolioId,
+                editPortfolioName: editPortfolioName,
+                editPortfolioDescription: editPortfolioDescription,
+                editPortfolioCurrency: editPortfolioCurrency,
+                editPortfolioAllocationMax: editPortfolioAllocationMax,
+                editPortfolioAllocationMin: editPortfolioAllocationMin,
+                editPortfolioSortOrder: editPortfolioSortOrder,
+                editPortfolioIsActive: editPortfolioIsActive
             },
-            error: function (error) {
+            error: function(error) {
                 if (error.responseJSON.errors) {
                     let errors = error.responseJSON.errors;
                     $.each(errors, function (index, value) {
-                        console.log(errors);
                         $('#' + index).addClass('is-invalid');
                         $('#' + index + 'Div').append('<span class="invalid-feedback d-block"><strong>' + value + '</strong></span>');
                     });
@@ -142,7 +147,7 @@ $(document).ready(function () {
                     })
                 }
             },
-            success: function (data) {
+            success: function(data) {
                 if (data.success === true) {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -155,16 +160,16 @@ $(document).ready(function () {
                         type: 'success',
                         title: 'Updated successfully'
                     });
-                    $('#editUserModal').modal('hide');
+                    $('#editPortfolioModal').modal('hide');
                     clearModalInput();
-                    usersList.ajax.reload();
+                    portfilioList.ajax.reload();
                 }
             }
         });
     });
 
-    $('#deleteUserSubmit').on('click', function () {
-        let userId = $('#editUserId').val();
+    $('#deletePortfolioSubmit').on('click', function() {
+        let portfolioId = $('#editPortfolioId').val();
 
         Swal.fire({
             title: 'Are you sure?',
@@ -178,9 +183,9 @@ $(document).ready(function () {
             if (result.value) {
                 $.ajax({
                     type: 'delete',
-                    url: 'delete_user',
+                    url: 'delete_portfolio',
                     data: {
-                        userId: userId
+                        portfolioId: portfolioId
                     },
                     error: function(error) {
                         Swal.fire({
@@ -191,7 +196,6 @@ $(document).ready(function () {
                     },
                     success: function(data) {
                         if (data.success === true) {
-                            usersList.ajax.reload();
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'center',
@@ -203,8 +207,8 @@ $(document).ready(function () {
                                 type: 'success',
                                 title: 'Deleted successfully'
                             });
-                            $('#editUserModal').modal('hide');
-                            clearModalInput();
+                            $('#editPortfolioModal').modal('hide');
+                            portfilioList.ajax.reload();
                         }
                     }
                 });

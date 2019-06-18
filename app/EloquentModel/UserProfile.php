@@ -30,7 +30,6 @@ class UserProfile extends Model
             'last_name' => $data['lastName'],
             'address' => $data['address'],
             'phone' => $data['phone'],
-            'isActive' => intval($data['isActive']),
         ]);
 
         return true;

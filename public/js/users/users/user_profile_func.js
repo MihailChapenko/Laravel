@@ -1,13 +1,14 @@
 $(document).ready(function () {
 
     $('#saveProfile').on('click', function () {
+        clearValidation();
         let userId = $('#userId span').text(),
             firstName = $('#firstName').val(),
             lastName = $('#lastName').val(),
             address = $('#address').val(),
             phone = $('#phone').val(),
-            email = $('#email').val(),
-            isActive = ($('#isActive').prop('checked')) ? 1 : 0;
+            email = $('#email').val();
+
 
         $.ajax({
             type: 'post',
@@ -18,8 +19,7 @@ $(document).ready(function () {
                 lastName: lastName,
                 address: address,
                 phone: phone,
-                email: email,
-                isActive: isActive
+                email: email
             },
             error: function (error) {
                 if (error.responseJSON.errors) {
@@ -102,5 +102,4 @@ $(document).ready(function () {
             }
         });
     });
-
 });

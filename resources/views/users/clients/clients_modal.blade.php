@@ -18,6 +18,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div id="portfolioIdDiv" class="form-group">
+                    <label for="portfolioId">Portfolio Id</label>
+                    <select class="form-control" id="portfolioId">
+                        <option value="" selected>Choose portfolio...</option>
+                        @foreach($portfolio as $item)
+                            <option portfolio-id="{{$item->id}}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div id="clientNameDiv" class="form-group">
                     <label for="clientName">Name</label>
                     <input type="text" class="form-control modal-input" id="clientName">
@@ -73,7 +82,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="deleteClientSubmit" type="button" class="btn btn-danger">Delete client</button>
+{{--                <button id="deleteClientSubmit" type="button" class="btn btn-danger">Delete client</button>--}}
                 <button id="editClientSubmit" type="button" class="btn btn-primary">Save</button>
             </div>
         </div>

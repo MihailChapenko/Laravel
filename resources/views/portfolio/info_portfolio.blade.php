@@ -1,0 +1,26 @@
+@extends('layouts.app')
+
+@section('content')
+
+    <div class="container">
+        <h2 class="mb-4">Portfolio</h2>
+        <div class="mb-4">
+            <button id="addPortfolio" class="btn btn-primary">Add portfolio</button>
+        </div>
+        <table id="portfolioList" class="table stripe hover row-border noselect">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Allocation min</th>
+                <th>Allocation max</th>
+                <th>Active</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    @include('portfolio.portfolio_modals')
+
+@endsection

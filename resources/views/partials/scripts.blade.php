@@ -25,3 +25,6 @@
 
 {{--Client--}}
 <script src="{{ asset('js/users/clients/clients_func.js') }}" defer></script>
+
+{{--Portfolio--}}
+<script src="{{ asset('js/portfolio/portfolio_func.js') }}" defer></script>

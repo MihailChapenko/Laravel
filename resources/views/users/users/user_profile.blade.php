@@ -42,19 +42,13 @@
                     <div class="col-6">
                         <div id="phoneDiv" class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="text" class="form-control" id="phone" value="{{ $userInfo->phone }}">
+                            <input type="text" class="form-control" id="phone" maxlength="10" value="{{ $userInfo->phone }}">
                         </div>
                     </div>
                     <div class="col-6">
                         <div id="emailDiv" class="form-group">
                             <label for="email">Email address</label>
                             <input type="email" class="form-control" id="email" value="{{ $userInfo->email }}">
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="isActive" {{($userInfo->isActive) ? 'checked' : ''}}>
-                            <label class="form-check-label" for="isActive">Check if user is active</label>
                         </div>
                     </div>
                     <div class="col-12">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\User;
 
 use App\Http\Requests\ChangeUserPassRequest;
+use App\Http\Requests\DeleteUserRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -51,7 +52,7 @@ class UserController extends Controller
 
     public function findUser(Request $request)
     {
-        $user = $this->user->find($request->input('userId'));
+        $user = $this->user->getUserInfo($request->input('userId'));
 
         return response()->json(['success' => true, 'user' => $user]);
     }
@@ -84,6 +85,7 @@ class UserController extends Controller
                 'user_id' => $user->id,
             ];
 
+            $user->givePermissionTo(['view users', 'create portfolio', 'create trades']);
             $this->profile->findProfile($user->id)->update(['client_id' => $admin->client_id]);
             $this->relations->create($relations);
         }
@@ -102,6 +104,11 @@ class UserController extends Controller
             $data['password'] = Hash::make($request->input('editUserPass'));
         }
 
+        if(!empty($request->input('isActive')))
+        {
+            $this->profile->findProfile($request->input('userId'))->update(['isActive' => $request->input('isActive')]);
+        }
+
         $this->user->find($request->input('userId'))->update($data);
 
         if(!empty($request->input('adminNewPermissions') && Auth::id() === 1))
@@ -118,7 +125,7 @@ class UserController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function deleteUser(Request $request)
+    public function deleteUser(DeleteUserRequest $request)
     {
         $this->user->find($request->input('userId'))->delete();
 

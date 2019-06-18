@@ -22,7 +22,6 @@ class ProfileController extends Controller
     public function index()
     {
         $userInfo = $this->profile->getUserInfo(Auth::id());
-//        dd($userInfo);
 
         return view('users/users/user_profile', compact('userInfo'));
     }

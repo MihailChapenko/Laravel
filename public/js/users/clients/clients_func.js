@@ -29,6 +29,7 @@ $(document).ready(function () {
         clearValidation();
 
         let adminId = $('#adminId option:selected').attr('admin-id'),
+            portfolioId = $('#portfolioId option:selected').attr('portfolio-id'),
             clientName = $('#clientName').val(),
             clientModel = $('#clientModel').val(),
             clientTheme = $('#clientTheme').val(),
@@ -40,6 +41,7 @@ $(document).ready(function () {
             url: 'add_client',
             data: {
                 adminId: adminId,
+                portfolioId: portfolioId,
                 clientName: clientName,
                 clientModel: clientModel,
                 clientTheme: clientTheme,

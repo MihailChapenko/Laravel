@@ -9,13 +9,16 @@
 }
 
 #usersList tr:hover,
-#clientsList tr:hover {
+#clientsList tr:hover,
+#portfolioList tr:hover {
     cursor: pointer;
 }
 #usersList th:before,
 #usersList th:after,
 #clientsList th:before,
-#clientsList th:after {
+#clientsList th:after,
+#portfolioList th:before,
+#portfolioList th:after{
     content: ''
 }
 

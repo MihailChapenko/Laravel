@@ -28,6 +28,7 @@ class AddClientRequest extends FormRequest
     {
         return [
             'adminId' => 'required|unique:clients,admin_id|exists:users,id',
+            'portfolioId' => 'required',
             'clientName' => 'required|max:255',
             'clientModel' => 'required|max:10',
             'clientTheme' => 'required|max:30',
