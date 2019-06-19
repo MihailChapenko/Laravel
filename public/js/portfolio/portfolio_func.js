@@ -14,7 +14,7 @@ $(document).ready(function() {
             {data: 'description', className: "dt-center", "targets": "_all"},
             {data: 'allocation_min', className: "dt-center", "targets": "_all"},
             {data: 'allocation_max', className: "dt-center", "targets": "_all"},
-            {data: 'isActive', className: "dt-center", "targets": "_all"},
+            {data: 'is_active', className: "dt-center", "targets": "_all"},
         ],
     });
 

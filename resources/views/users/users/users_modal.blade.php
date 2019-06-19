@@ -73,12 +73,14 @@
                     <label for="editUserPass">Password</label>
                     <input type="password" class="form-control modal-input" id="editUserPass">
                 </div>
-                <div class="col-12">
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="isActive">
-                        <label class="form-check-label" for="isActive">Check if user is active</label>
+                @can('crud users')
+                    <div class="col-12">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="isActive">
+                            <label class="form-check-label" for="isActive">Check if user is active</label>
+                        </div>
                     </div>
-                </div>
+                @endcan
             </div>
             <div class="modal-footer">
 {{--                <button id="deleteUserSubmit" type="button" class="btn btn-danger">Delete user</button>--}}

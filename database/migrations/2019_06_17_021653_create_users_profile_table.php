@@ -21,8 +21,9 @@ class CreateUsersProfileTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->integer('client_id')->default(0);
-            $table->boolean('isAdmin')->default(false);
-            $table->boolean('isActive')->default(false);
+            $table->integer('admin_id')->default(0);
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

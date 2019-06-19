@@ -10,7 +10,7 @@ class UserProfile extends Model
     protected $table = 'users_profile';
 
     protected $fillable = [
-      'user_id', 'first_name', 'last_name', 'address', 'phone', 'isAdmin', 'isActive', 'client_id'
+      'user_id', 'first_name', 'last_name', 'address', 'phone', 'is_admin', 'is_active', 'client_id', 'admin_id'
     ];
 
     public function getUserInfo($id)
@@ -18,7 +18,7 @@ class UserProfile extends Model
         return UserProfile::join('users', 'users.id', '=', 'users_profile.user_id')
                         ->select('users_profile.user_id', 'users_profile.first_name', 'users_profile.last_name',
                             'users_profile.address', 'users_profile.phone', 'users_profile.client_id',
-                            'users_profile.isAdmin', 'users_profile.isActive', 'users_profile.created_at', 'users.email')
+                            'users_profile.is_admin', 'users_profile.is_active', 'users_profile.created_at', 'users.email')
                         ->where('users_profile.user_id', '=', $id)
                         ->first();
     }

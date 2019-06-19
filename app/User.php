@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'client_id', 'isAdmin'
+        'name', 'email', 'password'
     ];
 
     /**
@@ -45,19 +45,18 @@ class User extends Authenticatable
         if(Auth::id() === 1)
         {
             return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
-                        ->select('users.id', 'users.name', 'users.email', 'users_profile.isAdmin', 'users_profile.isActive')
+                        ->select('users.id', 'users.name', 'users.email', 'users_profile.is_admin', 'users_profile.is_active')
                         ->where('users.id', '!=', 1)->get();
         }
-        return User::join('users_to_client', 'users_to_client.user_id', '=', 'users.id')
-                    ->join('users_profile', 'users_profile.user_id', '=', 'users.id')
-                    ->select('users.id', 'users.name', 'users.email', 'users_profile.isAdmin')
-                    ->where('users_to_client.admin_id', '=', Auth::id())->get();
+        return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
+                    ->select('users.id', 'users.name', 'users.email', 'users_profile.is_admin')
+                    ->where('users_profile.admin_id', '=', Auth::id())->get();
     }
 
     public function findAdmin($id)
     {
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
-            ->select('users_profile.client_id')
+            ->select('users_profile.client_id', 'users_profile.user_id', 'users_profile.admin_id')
             ->where('users.id', '=', $id)->first();
     }
 
@@ -66,14 +65,14 @@ class User extends Authenticatable
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
             ->select('users.id', 'users.email')
             ->where('users.id', '!=', 1)
-            ->where('isAdmin', '=', 1)
+            ->where('is_admin', '=', 1)
             ->where('client_id', '=', 0)->get();
     }
 
     public function getUserInfo($id)
     {
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
-                    ->select('users.id', 'users.name', 'users.email', 'users_profile.isActive')
+                    ->select('users.id', 'users.name', 'users.email', 'users_profile.is_active')
                     ->where('users.id', '=', $id)->first();
     }
 }

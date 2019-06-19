@@ -23,7 +23,7 @@ class ProfileController extends Controller
     {
         $userInfo = $this->profile->getUserInfo(Auth::id());
 
-        return view('users/users/user_profile', compact('userInfo'));
+        return view('users.users.user_profile', compact('userInfo'));
     }
 
     public function updateProfile(UpdateProfileRequest $request)

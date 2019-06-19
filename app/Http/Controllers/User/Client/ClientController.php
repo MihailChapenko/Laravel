@@ -2,43 +2,39 @@
 
 namespace App\Http\Controllers\User\Client;
 
-use App\Http\Requests\DeleteClientRequest;
 use App\User;
-use Illuminate\Http\Request;
-use App\EloquentModel\Client;
-use Spatie\Permission\Models\Permission;
-use Yajra\DataTables\DataTables;
-use App\EloquentModel\UserToClient;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EditUserRequest;
-use App\Http\Requests\AddClientRequest;
-use App\Http\Requests\EditClientRequest;
+use App\Http\Requests\{
+    AddClientRequest,
+    EditClientRequest,
+    DeleteClientRequest
+};
 use App\EloquentModel\{
     UserProfile as Profile,
-    UserToClient as Relations,
-    Portfolio
+    Portfolio, Client
 };
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class ClientController extends Controller
 {
     private $user;
     private $client;
     private $profile;
-    private $relations;
     private $portfolio;
 
-    public function __construct(User $user, Client $client, Relations $relations, Profile $profile, Portfolio $portfolio)
+    public function __construct(User $user, Client $client, Profile $profile, Portfolio $portfolio)
     {
         $this->user = $user;
         $this->client = $client;
         $this->profile = $profile;
         $this->portfolio = $portfolio;
-        $this->relations = $relations;
     }
 
     public function index()
     {
-        $admins = $this->user->getAvailibleAdmins();
+        $admins = Auth::user()->getAvailibleAdmins();
         $portfolio = $this->portfolio->getAvailablePortfolio();
 
         return view('users.clients.info_clients', compact('admins', 'portfolio'));
@@ -53,7 +49,7 @@ class ClientController extends Controller
         )->setRowAttr([
             'id-client' => '{{$id}}',
             'id-admin' => '{{$admin_id}}'
-        ])->toJson();
+        ])->make();
     }
 
     public function findClient(Request $request)
@@ -65,7 +61,6 @@ class ClientController extends Controller
 
     public function addClient(AddClientRequest $request)
     {
-
         $clientData = [
             'admin_id' => $request->input('adminId'),
             'name' => $request->input('clientName'),
@@ -75,8 +70,12 @@ class ClientController extends Controller
         ];
 
         $client = $this->client->create($clientData);
-        $this->profile->findProfile($request->input('adminId'))->update(['client_id' => $request->input('adminId')]);
-        $this->portfolio->find($request->input('portfolioId'))->update(['client_id' => $client->id]);
+
+        $this->profile->findProfile($request->input('adminId'))->update(['client_id' => $client->id]);
+        $this->portfolio->find($request->input('portfolioId'))->update([
+            'client_id' => $client->id,
+            'parent_id' => 0
+        ]);
 
         return response()->json(['success' => true]);
     }

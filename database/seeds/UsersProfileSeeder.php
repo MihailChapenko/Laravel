@@ -19,8 +19,8 @@ class UsersProfileSeeder extends Seeder
                 'last_name' => 'Admin',
                 'address' => 'secret',
                 'phone' => '123123',
-                'isAdmin' => true,
-                'isActive' => true,
+                'is_admin' => true,
+                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now()
             ]

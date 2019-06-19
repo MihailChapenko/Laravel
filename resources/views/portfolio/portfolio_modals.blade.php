@@ -77,10 +77,12 @@
                     <label for="editPortfolioSortOrder">Sort Order</label>
                     <input type="text" class="form-control modal-input" id="editPortfolioSortOrder">
                 </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="editPortfolioIsActive">
-                    <label class="form-check-label" for="editPortfolioIsActive">Check if portfolio is active</label>
-                </div>
+                @can('crud users')
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="editPortfolioIsActive">
+                        <label class="form-check-label" for="editPortfolioIsActive">Check if portfolio is active</label>
+                    </div>
+                @endcan
             </div>
             <div class="modal-footer">
 {{--                <button id="deletePortfolioSubmit" type="button" class="btn btn-danger">Delete portfolio</button>--}}

@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Portfolio;
 
-use App\Http\Requests\DeletePortfolioRequest;
 use App\User;
-use App\Http\Requests\AddPortfolioRequest;
-use App\Http\Requests\EditPortfolioRequest;
+use App\Http\Requests\{
+    DeletePortfolioRequest,
+    AddPortfolioRequest,
+    EditPortfolioRequest
+};
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\EloquentModel\Portfolio;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 
 class PortfolioController extends Controller
@@ -31,22 +33,27 @@ class PortfolioController extends Controller
 
     public function getPortfolioList()
     {
-        $portfolio = $this->portfolio->all();
+        $portfolio = $this->portfolio->getPortfoliosList();
 
         return DataTables::of($portfolio)->setRowClass(
             'portfolio-info'
         )->setRowAttr([
             'id-portfolio' => '{{$id}}',
-        ])->toJson();
+        ])->make();
     }
 
     public function addPortfolio(AddPortfolioRequest $request)
     {
-        $admin = $this->user->findAdmin(Auth::id());
+        $admin = Auth::user()->findAdmin(Auth::id());
+        $parentPortfolio = $this->portfolio->findParentPortfolio($admin->client_id);
+
+        if(is_null($parentPortfolio))
+        {
+            $parentPortfolio = $this->portfolio->findPortfolio($admin->client_id);
+        }
 
         $newPortfolio = [
-            'client_id' => 0,
-            'parent_id' => 0,
+            'admin_id' => ($admin->id) ? $admin->id : Auth::id(),
             'benchmark_id' => 0,
             'name' => $request->input('portfolioName'),
             'description' => $request->input('portfolioDescription'),
@@ -54,10 +61,19 @@ class PortfolioController extends Controller
             'allocation_max' => $request->input('portfolioAllocationMax'),
             'allocation_min' => $request->input('portfolioAllocationMin'),
             'sort_order' => $request->input('portfolioSortOrder'),
-            'isActive' => 1
+            'is_active' => 1
         ];
 
-
+        if(Auth::id() === 1)
+        {
+            $newPortfolio['client_id'] = 0;
+            $newPortfolio['parent_id'] = 0;
+        }
+        else
+        {
+            $newPortfolio['client_id'] = $admin['client_id'];
+            $newPortfolio['parent_id'] = $parentPortfolio['id'];
+        }
 
         $this->portfolio->create($newPortfolio);
 

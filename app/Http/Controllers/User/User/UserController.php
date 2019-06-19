@@ -2,34 +2,32 @@
 
 namespace App\Http\Controllers\User\User;
 
-use App\Http\Requests\ChangeUserPassRequest;
-use App\Http\Requests\DeleteUserRequest;
 use App\User;
+use App\Http\Requests\{
+    AddUserRequest,
+    EditUserRequest,
+    ChangeUserPassRequest,
+    DeleteUserRequest
+};
+use App\EloquentModel\{
+    UserProfile as Profile
+};
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\AddUserRequest;
-use App\Http\Requests\EditUserRequest;
-use Illuminate\Support\Facades\Validator;
-use App\EloquentModel\{
-    UserProfile as Profile,
-    UserToClient as Relations
-};
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
     private $user;
     private $profile;
-    private $relations;
 
-    public function __construct(User $user, Relations $relations, Profile $profile)
+    public function __construct(User $user, Profile $profile)
     {
         $this->user = $user;
         $this->profile = $profile;
-        $this->relations = $relations;
     }
 
     public function index()
@@ -41,25 +39,25 @@ class UserController extends Controller
 
     public function getUsersList()
     {
-        $users = $this->user->getUsersList();
+        $users = Auth::user()->getUsersList();
 
         return DataTables::of($users)->setRowClass(
-            ( '{{$isAdmin ? "admin user-info" : "user-info"}}' )
+            ( '{{$is_admin ? "admin user-info" : "user-info"}}' )
         )->setRowAttr([
             'id-user' => '{{$id}}',
-        ])->toJson();
+        ])->make();
     }
 
     public function findUser(Request $request)
     {
-        $user = $this->user->getUserInfo($request->input('userId'));
+        $user = Auth::user()->getUserInfo($request->input('userId'));
 
         return response()->json(['success' => true, 'user' => $user]);
     }
 
     public function addUser(AddUserRequest $request)
     {
-        $admin = $this->user->findAdmin(Auth::id());
+        $admin = Auth::user()->findAdmin(Auth::id());
 
         $data = [
           'name' => $request->input('userName'),
@@ -72,22 +70,24 @@ class UserController extends Controller
         if(Auth::id() === 1)
         {
             $user->assignRole('admin');
+
             foreach ($request->input('adminPermissions') as $permission)
             {
                 $user->givePermissionTo(intval($permission));
             }
+
+            $this->profile->findProfile($user->id)->update([
+                'is_admin' => true,
+                'admin_id' => Auth::id()
+            ]);
         }
         else
         {
-            $relations = [
-                'client_id' => $admin->client_id,
-                'admin_id' => Auth::id(),
-                'user_id' => $user->id,
-            ];
-
             $user->givePermissionTo(['view users', 'create portfolio', 'create trades']);
-            $this->profile->findProfile($user->id)->update(['client_id' => $admin->client_id]);
-            $this->relations->create($relations);
+            $this->profile->findProfile($user->id)->update([
+                'client_id' => $admin->client_id,
+                'admin_id' => Auth::id()
+            ]);
         }
 
         return response()->json(['success' => true]);
@@ -106,7 +106,7 @@ class UserController extends Controller
 
         if(!empty($request->input('isActive')))
         {
-            $this->profile->findProfile($request->input('userId'))->update(['isActive' => $request->input('isActive')]);
+            $this->profile->findProfile($request->input('userId'))->update(['is_active' => $request->input('isActive')]);
         }
 
         $this->user->find($request->input('userId'))->update($data);
