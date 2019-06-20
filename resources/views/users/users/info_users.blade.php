@@ -15,7 +15,6 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
         </table>

@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $permissions = Permission::where('name', '!=', 'crud clients')->where('name', '!=', 'view clients')->get();
 
-        return view('users.users.info_users', compact('permissions'));
+        return view('users.users.info_users', compact('permissions', 'permissions'));
     }
 
     public function getUsersList()
@@ -46,19 +46,20 @@ class UserController extends Controller
             ( '{{$is_admin ? "admin user-info" : "user-info"}}' )
         )->setRowAttr([
             'id-user' => '{{$id}}',
-        ])->addColumn('actions',
-            function($row) {
-                return view('help_components.buttons.user_buttons', ['id' => $row['id']]);
-            })
-        ->rawColumns(['actions'])
-        ->make(true);
+        ])->make(true);
     }
 
     public function findUser(Request $request)
     {
         $user = Auth::user()->getUserInfo($request->input('userId'));
+        $permission = Auth::user()->can('crud users');
 
-        return response()->json(['success' => true, 'user' => $user]);
+        if(!$permission)
+        {
+            return response()->json(['error' => 'No permissions to edit user']);
+        }
+
+        return response()->json(['success' => true, 'user' => $user, 'permission' => $permission]);
     }
 
     public function addUser(AddUserRequest $request)
