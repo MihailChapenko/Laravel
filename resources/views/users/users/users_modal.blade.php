@@ -17,7 +17,7 @@
                     <label for="userEmail">Email address</label>
                     <input type="text" class="form-control modal-input" id="userEmail">
                 </div>
-                @role('super-admin')
+                @can('crud users')
                     <div id="adminPermissionsDiv" class="form-group">
                         <label for="adminPermissions">Admin Permissions</label>
                         <select id="adminPermissions" class="selectpicker form-control" multiple data-live-search="true" autocomplete="off">
@@ -26,7 +26,7 @@
                             @endforeach
                         </select>
                     </div>
-                @endrole
+                @endcan
                 <div id="userPassDiv" class="form-group">
                     <label for="userPass">Password</label>
                     <input type="password" class="form-control modal-input" id="userPass">
@@ -59,7 +59,7 @@
                     <label for="editUserEmail">Email address</label>
                     <input type="text" class="form-control modal-input" id="editUserEmail">
                 </div>
-                @role('super-admin')
+                @can('crud users')
                 <div id="editAdminPermissionsDiv" class="form-group">
                     <label for="editAdminPermissions">Admin Permissions</label>
                     <select id="editAdminPermissions" class="selectpicker form-control" multiple data-live-search="true" autocomplete="off">
@@ -68,7 +68,7 @@
                         @endforeach
                     </select>
                 </div>
-                @endrole
+                @endcan
                 <div id="editUserPassDiv" class="form-group">
                     <label for="editUserPass">Password</label>
                     <input type="password" class="form-control modal-input" id="editUserPass">

@@ -4,9 +4,11 @@
 
     <div class="container">
         <h2 class="mb-4">Portfolio</h2>
-        <div class="mb-4">
-            <button id="addPortfolio" class="btn btn-primary">Add portfolio</button>
-        </div>
+        @can('crud portfolios')
+            <div class="mb-4">
+                <button id="addPortfolio" class="btn btn-primary">Add portfolio</button>
+            </div>
+        @endcan
         <table id="portfolioList" class="table stripe hover row-border noselect">
             <thead>
             <tr>

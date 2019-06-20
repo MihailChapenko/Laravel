@@ -15,7 +15,7 @@ class AddPortfolioRequest extends FormRequest
      */
     public function authorize()
     {
-        return (Auth::user()->hasPermissionTo('create portfolio')) ? true : false;
+        return (Auth::user()->hasPermissionTo('crud portfolios')) ? true : false;
     }
 
     /**

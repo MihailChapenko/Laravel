@@ -12,6 +12,7 @@ $(document).ready(function () {
             {data: 'id', className: "dt-center", "targets": "_all"},
             {data: 'name', className: "dt-center", "targets": "_all"},
             {data: 'email', className: "dt-center", "targets": "_all"},
+            {data: 'actions', className: "dt-center", "targets": "_all"},
         ],
     });
 
@@ -75,7 +76,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#usersList').on('dblclick', '.user-info', function () {
+    $('#usersList').on('click', '.edit-user', function () {
         let userId = $(this).attr('id-user');
 
         $.ajax({
@@ -92,11 +93,10 @@ $(document).ready(function () {
                 })
             },
             success: function (data) {
-                console.log(data.user);
                 $('#editUserId').val(data.user['id']);
                 $('#editUserName').val(data.user['name']);
                 $('#editUserEmail').val(data.user['email']);
-                (data.user['isActive'] === 1) ? $('#isActive').prop('checked', true) : '';
+                (data.user['is_active'] === 1) ? $('#isActive').prop('checked', true) : '';
                 $('#editUserModal').modal('show');
             }
         });

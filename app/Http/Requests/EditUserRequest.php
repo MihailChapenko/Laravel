@@ -16,7 +16,7 @@ class EditUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return (Auth::id() === 1 || User::role('admin')) ? true : false;
+        return (Auth::user()->hasPermissionTo('crud users')) ? true : false;
     }
 
     /**

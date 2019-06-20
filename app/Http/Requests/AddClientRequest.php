@@ -16,7 +16,7 @@ class AddClientRequest extends FormRequest
      */
     public function authorize()
     {
-        return (Auth::id() === 1 && User::role('super-admin')) ? true : false;
+        return (Auth::user()->hasPermissionTo('crud clients')) ? true : false;
     }
 
     /**

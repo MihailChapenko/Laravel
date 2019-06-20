@@ -2,12 +2,13 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\{
+    HasRoles, HasPermissions
+};
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Traits\HasPermissions;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -48,8 +49,11 @@ class User extends Authenticatable
                         ->select('users.id', 'users.name', 'users.email', 'users_profile.is_admin', 'users_profile.is_active')
                         ->where('users.id', '!=', 1)->get();
         }
+
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
                     ->select('users.id', 'users.name', 'users.email', 'users_profile.is_admin')
+                    ->where('users_profile.is_admin', '!=', 1)
+                    ->where('users.id', '!=', Auth::id())
                     ->where('users_profile.admin_id', '=', Auth::id())->get();
     }
 
@@ -72,7 +76,7 @@ class User extends Authenticatable
     public function getUserInfo($id)
     {
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
-                    ->select('users.id', 'users.name', 'users.email', 'users_profile.is_active')
+                    ->select('users.id', 'users.name', 'users.email', 'users_profile.is_active', 'users_profile.admin_id')
                     ->where('users.id', '=', $id)->first();
     }
 }

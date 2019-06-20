@@ -8,11 +8,14 @@
                                   supported by Chrome and Opera */
 }
 
-#usersList tr:hover,
-#clientsList tr:hover,
-#portfolioList tr:hover {
-    cursor: pointer;
+table td {
+    line-height: 37px;
 }
+/*#usersList tr:hover,*/
+/*#clientsList tr:hover,*/
+/*#portfolioList tr:hover {*/
+/*    cursor: pointer;*/
+/*}*/
 #usersList th:before,
 #usersList th:after,
 #clientsList th:before,
@@ -27,5 +30,8 @@
 }
 
 .admin {
-    background-color: mediumseagreen!important;
+    background-color: #1DE9B6!important;
+}
+.edit-user {
+    background-color: #FFB74D;
 }

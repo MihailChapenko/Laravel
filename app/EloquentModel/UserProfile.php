@@ -7,8 +7,18 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class UserProfile extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'users_profile';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
       'user_id', 'first_name', 'last_name', 'address', 'phone', 'is_admin', 'is_active', 'client_id', 'admin_id'
     ];

@@ -15,8 +15,9 @@ use App\EloquentModel\{
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\{
+    Auth, Hash
+};
 use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
@@ -32,7 +33,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::where('name', '!=', 'crud clients')->where('name', '!=', 'view clients')->get();
 
         return view('users.users.info_users', compact('permissions'));
     }
@@ -45,7 +46,12 @@ class UserController extends Controller
             ( '{{$is_admin ? "admin user-info" : "user-info"}}' )
         )->setRowAttr([
             'id-user' => '{{$id}}',
-        ])->make();
+        ])->addColumn('actions',
+            function($row) {
+                return view('help_components.buttons.user_buttons', ['id' => $row['id']]);
+            })
+        ->rawColumns(['actions'])
+        ->make(true);
     }
 
     public function findUser(Request $request)
@@ -70,12 +76,6 @@ class UserController extends Controller
         if(Auth::id() === 1)
         {
             $user->assignRole('admin');
-
-            foreach ($request->input('adminPermissions') as $permission)
-            {
-                $user->givePermissionTo(intval($permission));
-            }
-
             $this->profile->findProfile($user->id)->update([
                 'is_admin' => true,
                 'admin_id' => Auth::id()
@@ -83,11 +83,15 @@ class UserController extends Controller
         }
         else
         {
-            $user->givePermissionTo(['view users', 'create portfolio', 'create trades']);
             $this->profile->findProfile($user->id)->update([
                 'client_id' => $admin->client_id,
                 'admin_id' => Auth::id()
             ]);
+        }
+
+        foreach ($request->input('adminPermissions') as $permission)
+        {
+            $user->givePermissionTo(intval($permission));
         }
 
         return response()->json(['success' => true]);
@@ -104,7 +108,7 @@ class UserController extends Controller
             $data['password'] = Hash::make($request->input('editUserPass'));
         }
 
-        if(!empty($request->input('isActive')))
+        if(!is_null($request->input('isActive')))
         {
             $this->profile->findProfile($request->input('userId'))->update(['is_active' => $request->input('isActive')]);
         }

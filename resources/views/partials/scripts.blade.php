@@ -7,7 +7,8 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="{{ asset('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js') }}" defer></script>
 
-
+<!-- Fontawesome -->
+<script src="https://kit.fontawesome.com/8f8f9e3c46.js" defer></script>
 <!-- Helpers -->
 <script src="{{ asset('js/helpers/ajax_token.js') }}" defer></script>
 <script src="{{ asset('js/helpers/clear_validation.js') }}" defer></script>

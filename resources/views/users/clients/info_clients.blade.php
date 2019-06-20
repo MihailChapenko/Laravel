@@ -3,9 +3,11 @@
 @section('content')
     <div class="container">
         <h2 class="mb-4">Clients</h2>
-        <div class="mb-4">
-            <button id="addClient" class="btn btn-primary">Add client</button>
-        </div>
+        @can('crud clients')
+            <div class="mb-4">
+                <button id="addClient" class="btn btn-primary">Add client</button>
+            </div>
+        @endcan
         <table id="clientsList" class="table stripe hover row-border noselect">
             <thead>
             <tr>
