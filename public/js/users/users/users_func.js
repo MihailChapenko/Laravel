@@ -99,6 +99,11 @@ $(document).ready(function () {
                     $('#editUserName').val(data.user['name']);
                     $('#editUserEmail').val(data.user['email']);
                     (data.user['is_active'] === 1) ? $('#isActive').prop('checked', true) : '';
+                    let permissions = [];
+                    $.each(data.userPermissions, function( index, value ) {
+                        permissions.push(value.name);
+                    });
+                    $('.selectpicker').selectpicker('val', permissions);
                     $('#editUserModal').modal('show');
                 }
             }

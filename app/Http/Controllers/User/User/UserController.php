@@ -52,6 +52,7 @@ class UserController extends Controller
     public function findUser(Request $request)
     {
         $user = Auth::user()->getUserInfo($request->input('userId'));
+        $userPermissions = $user->permissions()->get();
         $permission = Auth::user()->can('crud users');
 
         if(!$permission)
@@ -59,7 +60,7 @@ class UserController extends Controller
             return response()->json(['error' => 'No permissions to edit user']);
         }
 
-        return response()->json(['success' => true, 'user' => $user]);
+        return response()->json(['success' => true, 'user' => $user, 'userPermissions' => $userPermissions]);
     }
 
     public function addUser(AddUserRequest $request)
