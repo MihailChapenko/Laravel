@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\User;
 use App\EloquentModel\UserProfile;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 class UserObserver
 {
@@ -55,6 +56,7 @@ class UserObserver
     public function deleted(User $user)
     {
         UserProfile::where('user_id', $user->id)->delete();
+        Permission::where('model_id', $user->id)->delete();
     }
 
     /**

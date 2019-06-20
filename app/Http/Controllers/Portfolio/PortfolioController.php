@@ -87,7 +87,7 @@ class PortfolioController extends Controller
 
         if(!$permission)
         {
-            return response()->json(['error' => 'No permissions to edit user']);
+            return response()->json(['error' => 'No permissions to edit portfolio']);
         }
 
         return response()->json(['success' => true, 'portfolio' => $portfolio]);

@@ -76,7 +76,6 @@ class UserController extends Controller
 
         if(Auth::id() === 1)
         {
-            $user->assignRole('admin');
             $this->profile->findProfile($user->id)->update([
                 'is_admin' => true,
                 'admin_id' => Auth::id()
