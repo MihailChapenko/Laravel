@@ -83,11 +83,11 @@ class PortfolioController extends Controller
     public function findPortfolio(Request $request)
     {
         $portfolio = $this->portfolio->find($request->input('portfolioId'));
-        $permission = Auth::user()->can('crud portfolio');
+        $permission = Auth::user()->can('crud portfolios');
 
         if(!$permission)
         {
-            return response()->json(['error' => 'No permissions to edit portfolio']);
+            return response()->json(['error' => 'No permissions to edit portfolios']);
         }
 
         return response()->json(['success' => true, 'portfolio' => $portfolio]);

@@ -59,7 +59,7 @@ class ClientController extends Controller
 
         if(!$permission)
         {
-            return response()->json(['error' => 'No permissions to edit client']);
+            return response()->json(['error' => 'No permissions to edit clients']);
         }
 
         return response()->json(['success' => true, 'client' => $client]);
