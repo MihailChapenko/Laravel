@@ -55,6 +55,12 @@ class ClientController extends Controller
     public function findClient(Request $request)
     {
         $client = $this->client->find($request->input('clientId'));
+        $permission = Auth::user()->can('crud clients');
+
+        if(!$permission)
+        {
+            return response()->json(['error' => 'No permissions to edit user']);
+        }
 
         return response()->json(['success' => true, 'client' => $client]);
     }

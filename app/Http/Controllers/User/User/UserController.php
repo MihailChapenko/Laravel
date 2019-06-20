@@ -59,7 +59,7 @@ class UserController extends Controller
             return response()->json(['error' => 'No permissions to edit user']);
         }
 
-        return response()->json(['success' => true, 'user' => $user, 'permission' => $permission]);
+        return response()->json(['success' => true, 'user' => $user]);
     }
 
     public function addUser(AddUserRequest $request)

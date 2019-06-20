@@ -11,11 +11,11 @@
 table td {
     line-height: 37px;
 }
-/*#usersList tr:hover,*/
-/*#clientsList tr:hover,*/
-/*#portfolioList tr:hover {*/
-/*    cursor: pointer;*/
-/*}*/
+#usersList tr:hover,
+#clientsList tr:hover,
+#portfolioList tr:hover {
+    cursor: pointer;
+}
 #usersList th:before,
 #usersList th:after,
 #clientsList th:before,

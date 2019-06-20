@@ -93,6 +93,7 @@ $(document).ready(function () {
                 clientId: clientId
             },
             error: function (error) {
+
                 Swal.fire({
                     title: 'Something went wrong!',
                     text: 'Please, reload the page.',
@@ -100,13 +101,17 @@ $(document).ready(function () {
                 })
             },
             success: function (data) {
-                $('#clientId').val(data.client['id']);
-                $('#editClientAdminId').val(data.client['admin_id']);
-                $('#editClientName').val(data.client['name']);
-                $('#editClientModel').val(data.client['model']);
-                $('#editClientTheme').val(data.client['theme']);
-                $('#editClientValueTable').val(data.client['valuetable']);
-                $('#editClientModal').modal('show');
+                if(data.error) {
+                    console.log(data.error)
+                } else {
+                    $('#clientId').val(data.client['id']);
+                    $('#editClientAdminId').val(data.client['admin_id']);
+                    $('#editClientName').val(data.client['name']);
+                    $('#editClientModel').val(data.client['model']);
+                    $('#editClientTheme').val(data.client['theme']);
+                    $('#editClientValueTable').val(data.client['valuetable']);
+                    $('#editClientModal').modal('show');
+                }
             }
         });
     });

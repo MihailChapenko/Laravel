@@ -95,15 +95,19 @@ $(document).ready(function() {
                 })
             },
             success: function(data) {
-                $('#editPortfolioId').val(data.portfolio['id']);
-                $('#editPortfolioName').val(data.portfolio['name']);
-                $('#editPortfolioDescription').val(data.portfolio['description']);
-                $('#editPortfolioCurrency').val(data.portfolio['currency']);
-                $('#editPortfolioAllocationMax').val(data.portfolio['allocation_max']);
-                $('#editPortfolioAllocationMin').val(data.portfolio['allocation_min']);
-                $('#editPortfolioSortOrder').val(data.portfolio['sort_order']);
-                (data.portfolio['isActive'] === 1) ? $('#editPortfolioIsActive').prop('checked', true) : '';
-                $('#editPortfolioModal').modal('show');
+                if(data.error) {
+                    console.log(data.error)
+                } else {
+                    $('#editPortfolioId').val(data.portfolio['id']);
+                    $('#editPortfolioName').val(data.portfolio['name']);
+                    $('#editPortfolioDescription').val(data.portfolio['description']);
+                    $('#editPortfolioCurrency').val(data.portfolio['currency']);
+                    $('#editPortfolioAllocationMax').val(data.portfolio['allocation_max']);
+                    $('#editPortfolioAllocationMin').val(data.portfolio['allocation_min']);
+                    $('#editPortfolioSortOrder').val(data.portfolio['sort_order']);
+                    (data.portfolio['isActive'] === 1) ? $('#editPortfolioIsActive').prop('checked', true) : '';
+                    $('#editPortfolioModal').modal('show');
+                }
             }
         })
     });

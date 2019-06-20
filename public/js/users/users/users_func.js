@@ -93,17 +93,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 if(data.error) {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'center',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-
-                    Toast.fire({
-                        type: 'error',
-                        title: data.error
-                    });
+                    console.log(data.error)
                 } else {
                     $('#editUserId').val(data.user['id']);
                     $('#editUserName').val(data.user['name']);
