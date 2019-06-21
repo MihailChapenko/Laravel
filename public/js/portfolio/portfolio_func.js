@@ -105,7 +105,7 @@ $(document).ready(function() {
                     $('#editPortfolioAllocationMax').val(data.portfolio['allocation_max']);
                     $('#editPortfolioAllocationMin').val(data.portfolio['allocation_min']);
                     $('#editPortfolioSortOrder').val(data.portfolio['sort_order']);
-                    (data.portfolio['isActive'] === 1) ? $('#editPortfolioIsActive').prop('checked', true) : '';
+                    (data.portfolio['is_active'] === 1) ? $('#editPortfolioIsActive').prop('checked', true) : '';
                     $('#editPortfolioModal').modal('show');
                 }
             }

@@ -40,7 +40,8 @@ class UserController extends Controller
 
     public function getUsersList()
     {
-        $users = Auth::user()->getUsersList();
+        $userInfo = $this->user->getUserInfo(Auth::id());
+        $users = Auth::user()->getUsersList($userInfo);
 
         return DataTables::of($users)->setRowClass(
             ( '{{$is_admin ? "admin user-info" : "user-info"}}' )

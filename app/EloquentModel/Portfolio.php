@@ -31,9 +31,9 @@ class Portfolio extends Model
             return Portfolio::all();
         }
 
-        return Portfolio::where('portfolios.client_id', '=', $user->client_id)
-                        ->where('admin_id', '!=', $user->admin_id)
-                        ->where('parent_id', '!=', 0)
+        return Portfolio::where('client_id', '=', $user->client_id)
+//                        ->where('admin_id', '!=', $user->admin_id)
+//                        ->where('parent_id', '!=', 0)
                         ->get();
     }
 

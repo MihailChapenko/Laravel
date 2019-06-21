@@ -41,7 +41,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getUsersList()
+    public function getUsersList($user)
     {
         if(Auth::id() === 1)
         {
@@ -52,9 +52,11 @@ class User extends Authenticatable
 
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
                     ->select('users.id', 'users.name', 'users.email', 'users_profile.is_admin')
-                    ->where('users_profile.is_admin', '!=', 1)
-                    ->where('users.id', '!=', Auth::id())
-                    ->where('users_profile.admin_id', '=', Auth::id())->get();
+//                    ->where('users_profile.is_admin', '!=', 1)
+                    ->where('users_profile.client_id', '=', $user->client_id)
+//                    ->where('users.id', '!=', Auth::id())
+//                    ->where('users_profile.admin_id', '=', Auth::id())
+            ->get();
     }
 
     public function findAdmin($id)
