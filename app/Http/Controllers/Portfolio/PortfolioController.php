@@ -97,9 +97,6 @@ class PortfolioController extends Controller
     public function editPortfolio(EditPortfolioRequest $request)
     {
         $newData = [
-            'client_id' => 0,
-            'parent_id' => 0,
-            'benchmark_id' => 0,
             'name' => $request->input('editPortfolioName'),
             'description' => $request->input('editPortfolioDescription'),
             'currency' => $request->input('editPortfolioCurrency'),
