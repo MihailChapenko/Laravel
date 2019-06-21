@@ -76,7 +76,8 @@ class User extends Authenticatable
     public function getUserInfo($id)
     {
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
-                    ->select('users.id', 'users.name', 'users.email', 'users_profile.is_active', 'users_profile.admin_id')
+                    ->select('users.id', 'users.name', 'users.email', 'users_profile.is_active',
+                             'users_profile.admin_id', 'users_profile.client_id')
                     ->where('users.id', '=', $id)->first();
     }
 }

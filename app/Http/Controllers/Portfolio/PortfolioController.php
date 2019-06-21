@@ -33,7 +33,8 @@ class PortfolioController extends Controller
 
     public function getPortfolioList()
     {
-        $portfolio = $this->portfolio->getPortfoliosList();
+        $user = $this->user->getUserInfo(Auth::id());
+        $portfolio = $this->portfolio->getPortfoliosList($user);
 
         return DataTables::of($portfolio)->setRowClass(
             'portfolio-info'

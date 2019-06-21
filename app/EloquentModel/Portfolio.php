@@ -24,15 +24,15 @@ class Portfolio extends Model
         'sort_order', 'is_active', 'admin_id'
     ];
 
-    public function getPortfoliosList()
+    public function getPortfoliosList($user)
     {
         if(Auth::id() === 1)
         {
             return Portfolio::all();
         }
 
-        return Portfolio::join('users_profile', 'users_profile.client_id', '=', 'portfolios.client_id')
-                        ->where('users_profile.user_id', '=', Auth::id())
+        return Portfolio::where('portfolios.client_id', '=', $user->client_id)
+                        ->where('admin_id', '!=', $user->admin_id)
                         ->where('parent_id', '!=', 0)
                         ->get();
     }
