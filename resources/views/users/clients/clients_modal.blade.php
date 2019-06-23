@@ -33,11 +33,11 @@
                 </div>
                 <div id="clientModelDiv" class="form-group">
                     <label for="clientModel">Model</label>
-                    <input type="text" class="form-control modal-input" id="clientModel" maxlength="10">
+                    <input type="text" class="form-control modal-input" id="clientModel" maxlength="10" value="TWR">
                 </div>
                 <div id="clientThemeDiv" class="form-group">
                     <label for="clientTheme">Theme</label>
-                    <input type="text" class="form-control modal-input" id="clientTheme" maxlength="30">
+                    <input type="text" class="form-control modal-input" id="clientTheme" maxlength="30" value="Default">
                 </div>
                 <div id="clientValueTableDiv" class="form-group">
                     <label for="clientValueTable">Value Table</label>

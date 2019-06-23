@@ -45,7 +45,7 @@ class ClientController extends Controller
         $clients = $this->client->all();
 
         return DataTables::of($clients)->setRowClass(
-            'client-info'
+            'client-info client'
         )->setRowAttr([
             'id-client' => '{{$id}}',
             'id-admin' => '{{$admin_id}}'

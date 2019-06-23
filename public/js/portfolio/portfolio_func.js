@@ -121,7 +121,7 @@ $(document).ready(function() {
             editPortfolioAllocationMax = $('#editPortfolioAllocationMax').val(),
             editPortfolioAllocationMin = $('#editPortfolioAllocationMin').val(),
             editPortfolioSortOrder = $('#editPortfolioSortOrder').val(),
-            editPortfolioIsActive = $('#editPortfolioIsActive').prop('checked');
+            editPortfolioIsActive = ($('#editPortfolioIsActive').prop('checked')) ? 1 : 0;
 
         $.ajax({
             type: 'post',

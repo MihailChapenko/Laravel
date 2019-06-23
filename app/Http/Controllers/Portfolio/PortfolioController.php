@@ -9,6 +9,7 @@ use App\Http\Requests\{
     EditPortfolioRequest
 };
 use Illuminate\Http\Request;
+use App\EloquentModel\Currency;
 use App\EloquentModel\Portfolio;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
@@ -18,17 +19,21 @@ use Illuminate\Support\Facades\Auth;
 class PortfolioController extends Controller
 {
     private $user;
+    private $currency;
     private $portfolio;
 
-    public function __construct(Portfolio $portfolio, User $user)
+    public function __construct(Portfolio $portfolio, User $user, Currency $currency)
     {
         $this->user = $user;
+        $this->currency = $currency;
         $this->portfolio = $portfolio;
     }
 
     public function index()
     {
-        return view('portfolio.info_portfolio');
+        $currency = $this->currency->all();
+
+        return view('portfolio.info_portfolio', compact('currency'));
     }
 
     public function getPortfolioList()
@@ -103,7 +108,7 @@ class PortfolioController extends Controller
             'allocation_max' => $request->input('editPortfolioAllocationMax'),
             'allocation_min' => $request->input('editPortfolioAllocationMin'),
             'sort_order' => $request->input('editPortfolioSortOrder'),
-            'isActive' => intval($request->input('editPortfolioIsActive'))
+            'is_active' => intval($request->input('editPortfolioIsActive'))
         ];
 
         $this->portfolio->find($request->input('portfolioId'))->update($newData);

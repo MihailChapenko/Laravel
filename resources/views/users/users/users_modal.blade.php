@@ -20,7 +20,7 @@
                 @can('crud users')
                     <div id="adminPermissionsDiv" class="form-group">
                         <label for="adminPermissions">Admin Permissions</label>
-                        <select id="adminPermissions" class="selectpicker form-control" multiple data-live-search="true" autocomplete="off">
+                        <select id="adminPermissions" class="selectpicker form-control" multiple data-actions-box="true" data-live-search="true" autocomplete="off">
                             @foreach($permissions as $permission)
                                 <option permission-id="{{ $permission->id }}">{{ $permission->name }}</option>
                             @endforeach
@@ -62,7 +62,7 @@
                 @can('crud users')
                 <div id="editAdminPermissionsDiv" class="form-group">
                     <label for="editAdminPermissions">Admin Permissions</label>
-                    <select id="editAdminPermissions" class="selectpicker form-control" multiple data-live-search="true" autocomplete="off">
+                    <select id="editAdminPermissions" class="selectpicker form-control" multiple data-actions-box="true" data-live-search="true" autocomplete="off">
                         @foreach($permissions as $permission)
                             <option permission-id="{{ $permission->id }}">{{ $permission->name }}</option>
                         @endforeach

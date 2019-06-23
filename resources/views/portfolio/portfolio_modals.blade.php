@@ -19,15 +19,20 @@
                 </div>
                 <div id="portfolioCurrencyDiv" class="form-group">
                     <label for="portfolioCurrency">Currency</label>
-                    <input type="text" class="form-control modal-input" maxlength="3" id="portfolioCurrency">
-                </div>
-                <div id="portfolioAllocationMaxDiv" class="form-group">
-                    <label for="portfolioAllocationMax">Allocation Max</label>
-                    <input type="text" class="form-control modal-input" id="portfolioAllocationMax">
+                    <select id="portfolioCurrency" class="form-control modal-input selectpicker">
+                        <option selected>Choose currency...</option>
+                        @foreach($currency as $item)
+                            <option id-currency="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div id="portfolioAllocationMinDiv" class="form-group">
                     <label for="portfolioAllocationMin">Allocation Min</label>
                     <input type="text" class="form-control modal-input" id="portfolioAllocationMin">
+                </div>
+                <div id="portfolioAllocationMaxDiv" class="form-group">
+                    <label for="portfolioAllocationMax">Allocation Max</label>
+                    <input type="text" class="form-control modal-input" id="portfolioAllocationMax">
                 </div>
                 <div id="portfolioSortOrderDiv" class="form-group">
                     <label for="portfolioSortOrder">Sort Order</label>
@@ -63,15 +68,20 @@
                 </div>
                 <div id="editPortfolioCurrencyDiv" class="form-group">
                     <label for="editPortfolioCurrency">Currency</label>
-                    <input type="text" class="form-control modal-input" maxlength="3" id="editPortfolioCurrency">
-                </div>
-                <div id="editPortfolioAllocationMaxDiv" class="form-group">
-                    <label for="editPortfolioAllocationMax">Allocation Max</label>
-                    <input type="text" class="form-control modal-input" id="editPortfolioAllocationMax">
+                    <select id="editPortfolioCurrency" class="form-control modal-input selectpicker">
+                        <option selected>Choose currency...</option>
+                        @foreach($currency as $item)
+                            <option id-currency="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div id="editPortfolioAllocationMinDiv" class="form-group">
                     <label for="editPortfolioAllocationMin">Allocation Min</label>
                     <input type="text" class="form-control modal-input" id="editPortfolioAllocationMin">
+                </div>
+                <div id="editPortfolioAllocationMaxDiv" class="form-group">
+                    <label for="editPortfolioAllocationMax">Allocation Max</label>
+                    <input type="text" class="form-control modal-input" id="editPortfolioAllocationMax">
                 </div>
                 <div id="editPortfolioSortOrderDiv" class="form-group">
                     <label for="editPortfolioSortOrder">Sort Order</label>
