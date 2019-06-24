@@ -32,8 +32,9 @@ class PortfolioController extends Controller
     public function index()
     {
         $currency = $this->currency->all();
+        $parentPortfolios = $this->portfolio->getAllParentPorfolios();
 
-        return view('portfolio.info_portfolio', compact('currency'));
+        return view('portfolio.info_portfolio', compact('currency', 'parentPortfolios'));
     }
 
     public function getPortfolioList()
@@ -51,14 +52,10 @@ class PortfolioController extends Controller
     public function addPortfolio(AddPortfolioRequest $request)
     {
         $admin = Auth::user()->findAdmin(Auth::id());
-        $parentPortfolio = $this->portfolio->findParentPortfolio($admin->client_id);
-
-        if(is_null($parentPortfolio))
-        {
-            $parentPortfolio = $this->portfolio->findPortfolio($admin->client_id);
-        }
 
         $newPortfolio = [
+            'parent_name' => $request->input('portfolioParentName'),
+            'parent_id' => $request->input('portfolioParentId'),
             'admin_id' => ($admin->id) ? $admin->id : Auth::id(),
             'benchmark_id' => 0,
             'name' => $request->input('portfolioName'),
@@ -73,12 +70,10 @@ class PortfolioController extends Controller
         if(Auth::id() === 1)
         {
             $newPortfolio['client_id'] = 0;
-            $newPortfolio['parent_id'] = 0;
         }
         else
         {
             $newPortfolio['client_id'] = $admin['client_id'];
-            $newPortfolio['parent_id'] = $parentPortfolio['id'];
         }
 
         $this->portfolio->create($newPortfolio);
@@ -88,7 +83,8 @@ class PortfolioController extends Controller
 
     public function findPortfolio(Request $request)
     {
-        $portfolio = $this->portfolio->find($request->input('portfolioId'));
+        $portfolioInfo = $this->portfolio->find($request->input('portfolioId'));
+        $parentPortfolioInfo = $this->portfolio->getParentPortfolio($portfolioInfo);
         $permission = Auth::user()->can('crud portfolios');
 
         if(!$permission)
@@ -96,7 +92,7 @@ class PortfolioController extends Controller
             return response()->json(['error' => 'No permissions to edit portfolios']);
         }
 
-        return response()->json(['success' => true, 'portfolio' => $portfolio]);
+        return response()->json(['success' => true, 'portfolioInfo' => $portfolioInfo, 'parentPortfolioInfo' => $parentPortfolioInfo]);
     }
 
     public function editPortfolio(EditPortfolioRequest $request)
@@ -110,6 +106,15 @@ class PortfolioController extends Controller
             'sort_order' => $request->input('editPortfolioSortOrder'),
             'is_active' => intval($request->input('editPortfolioIsActive'))
         ];
+
+        if($request->input('portfolioId') === $request->input('parentPortfolioId'))
+        {
+            $newData['parent_id'] = 0;
+        }
+        else
+        {
+            $newData['parent_id'] = $request->input('parentPortfolioId');
+        }
 
         $this->portfolio->find($request->input('portfolioId'))->update($newData);
 

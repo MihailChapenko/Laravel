@@ -10,6 +10,7 @@ $(document).ready(function() {
         },
         columns: [
             {data: 'id', className: "dt-center", "targets": "_all"},
+            {data: 'parent_name', className: "dt-center", "targets": "_all"},
             {data: 'name', className: "dt-center", "targets": "_all"},
             {data: 'description', className: "dt-center", "targets": "_all"},
             {data: 'allocation_min', className: "dt-center", "targets": "_all"},
@@ -24,7 +25,9 @@ $(document).ready(function() {
 
     $('#addPortfolioSubmit').on('click', function() {
         clearValidation();
-        let portfolioName = $('#portfolioName').val(),
+        let portfolioParentId = $('#portfolioParent option:selected').attr('id-parent'),
+            portfolioParentName = $('#portfolioParent option:selected').text(),
+            portfolioName = $('#portfolioName').val(),
             portfolioDescription = $('#portfolioDescription').val(),
             portfolioCurrency = $('#portfolioCurrency').val(),
             portfolioAllocationMax = $('#portfolioAllocationMax').val(),
@@ -35,6 +38,8 @@ $(document).ready(function() {
             type: 'post',
             url: 'add_portfolio',
             data: {
+                portfolioParentId: portfolioParentId,
+                portfolioParentName: portfolioParentName,
                 portfolioName: portfolioName,
                 portfolioDescription: portfolioDescription,
                 portfolioCurrency: portfolioCurrency,
@@ -70,6 +75,7 @@ $(document).ready(function() {
                         type: 'success',
                         title: 'Created successfully'
                     });
+                    $('.selectpicker').selectpicker('refresh');
                     $('#addPortfolioModal').modal('hide');
                     clearModalInput();
                     portfilioList.ajax.reload();
@@ -98,14 +104,23 @@ $(document).ready(function() {
                 if(data.error) {
                     console.log(data.error)
                 } else {
-                    $('#editPortfolioId').val(data.portfolio['id']);
-                    $('#editPortfolioName').val(data.portfolio['name']);
-                    $('#editPortfolioDescription').val(data.portfolio['description']);
-                    $('#editPortfolioCurrency').val(data.portfolio['currency']);
-                    $('#editPortfolioAllocationMax').val(data.portfolio['allocation_max']);
-                    $('#editPortfolioAllocationMin').val(data.portfolio['allocation_min']);
-                    $('#editPortfolioSortOrder').val(data.portfolio['sort_order']);
-                    (data.portfolio['is_active'] === 1) ? $('#editPortfolioIsActive').prop('checked', true) : '';
+                    $('#editPortfolioId').val(data.portfolioInfo['id']);
+                    if(data.parentPortfolioInfo === null) {
+                        $('#editPortfolioNewParent').prop('disabled', true)
+                                                .selectpicker('refresh')
+                                                .selectpicker('val', data.portfolioInfo['name']);
+                    } else {
+                        $('#editPortfolioNewParent').prop('disabled', false)
+                                                .selectpicker('refresh')
+                                                .selectpicker('val', data.parentPortfolioInfo['name']);
+                    }
+                    $('#editPortfolioName').val(data.portfolioInfo['name']);
+                    $('#editPortfolioDescription').val(data.portfolioInfo['description']);
+                    $('#editPortfolioCurrency').val(data.portfolioInfo['currency']);
+                    $('#editPortfolioAllocationMax').val(data.portfolioInfo['allocation_max']);
+                    $('#editPortfolioAllocationMin').val(data.portfolioInfo['allocation_min']);
+                    $('#editPortfolioSortOrder').val(data.portfolioInfo['sort_order']);
+                    (data.portfolioInfo['is_active'] === 1) ? $('#editPortfolioIsActive').prop('checked', true) : '';
                     $('#editPortfolioModal').modal('show');
                 }
             }
@@ -115,6 +130,7 @@ $(document).ready(function() {
     $('#editPortfolioSubmit').on('click', function() {
         clearValidation();
         let portfolioId = $('#editPortfolioId').val(),
+            parentPortfolioId = $('#editPortfolioNewParent option:selected').attr('id-parent'),
             editPortfolioName = $('#editPortfolioName').val(),
             editPortfolioDescription = $('#editPortfolioDescription').val(),
             editPortfolioCurrency = $('#editPortfolioCurrency').val(),
@@ -128,6 +144,7 @@ $(document).ready(function() {
             url: 'edit_portfolio',
             data: {
                 portfolioId: portfolioId,
+                parentPortfolioId: parentPortfolioId,
                 editPortfolioName: editPortfolioName,
                 editPortfolioDescription: editPortfolioDescription,
                 editPortfolioCurrency: editPortfolioCurrency,

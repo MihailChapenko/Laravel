@@ -20,6 +20,7 @@ class CreatePortfoliosTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->integer('benchmark_id');
             $table->string('name', 200);
+            $table->string('parent_name', 200)->nullable();
             $table->text('description');
             $table->string('currency', 3);
             $table->double('allocation_min');

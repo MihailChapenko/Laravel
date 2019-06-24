@@ -9,13 +9,26 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div id="portfolioParentDiv" class="form-group">
+                    <label for="portfolioParent">Top Portfolio</label>
+                    <select id="portfolioParent" class="form-control modal-input selectpicker">
+                        @role('super-admin')
+                            <option id-parent="0" selected>Top Portfolio</option>
+                        @else
+                            <option selected>Choose parent portfolio...</option>
+                        @endrole
+                        @foreach($parentPortfolios as $item)
+                            <option id-parent="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div id="portfolioNameDiv" class="form-group">
                     <label for="portfolioName">Name</label>
                     <input type="text" class="form-control modal-input" id="portfolioName">
                 </div>
                 <div id="portfolioDescriptionDiv" class="form-group">
                     <label for="portfolioDescription">Description</label>
-                    <input type="text" class="form-control modal-input" id="portfolioDescription">
+                    <textarea type="text" class="form-control modal-input" id="portfolioDescription"></textarea>
                 </div>
                 <div id="portfolioCurrencyDiv" class="form-group">
                     <label for="portfolioCurrency">Currency</label>
@@ -58,13 +71,21 @@
             </div>
             <div class="modal-body">
                 <input id="editPortfolioId" type="hidden">
+                <div id="editPortfolioParentDiv" class="form-group">
+                    <label for="editPortfolioNewParent">Top Portfolio</label>
+                    <select id="editPortfolioNewParent" class="form-control modal-input selectpicker">
+                        @foreach($parentPortfolios as $item)
+                            <option id-parent="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div id="editPortfolioNameDiv" class="form-group">
                     <label for="editPortfolioName">Name</label>
                     <input type="text" class="form-control modal-input" id="editPortfolioName">
                 </div>
                 <div id="editPortfolioDescriptionDiv" class="form-group">
                     <label for="editPortfolioDescription">Description</label>
-                    <input type="text" class="form-control modal-input" id="editPortfolioDescription">
+                    <textarea type="text" class="form-control modal-input" id="editPortfolioDescription"></textarea>
                 </div>
                 <div id="editPortfolioCurrencyDiv" class="form-group">
                     <label for="editPortfolioCurrency">Currency</label>

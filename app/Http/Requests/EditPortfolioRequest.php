@@ -26,6 +26,7 @@ class EditPortfolioRequest extends FormRequest
     public function rules()
     {
         return [
+            'parentPortfolioId' => 'required|integer',
             'editPortfolioName' => 'required|max:200',
             'editPortfolioDescription' => 'required|max:255',
             'editPortfolioCurrency' => 'required|max:3',

@@ -13,7 +13,8 @@
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Parent Portfolio</th>
+                <th>Portfolio</th>
                 <th>Description</th>
                 <th>Allocation min</th>
                 <th>Allocation max</th>

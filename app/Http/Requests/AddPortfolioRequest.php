@@ -27,6 +27,8 @@ class AddPortfolioRequest extends FormRequest
     {
 
         return [
+            'portfolioParentId' => 'required|integer',
+            'portfolioParentName' => 'required|max:200',
             'portfolioName' => 'required|max:200',
             'portfolioDescription' => 'required|max:255',
             'portfolioCurrency' => 'required|max:3',

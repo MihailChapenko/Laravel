@@ -21,7 +21,7 @@ class Portfolio extends Model
      */
     protected $fillable = [
         'client_id', 'parent_id', 'benchmark_id', 'name', 'description', 'currency', 'allocation_min', 'allocation_max',
-        'sort_order', 'is_active', 'admin_id'
+        'sort_order', 'is_active', 'admin_id', 'parent_name'
     ];
 
     public function getPortfoliosList($user)
@@ -32,8 +32,7 @@ class Portfolio extends Model
         }
 
         return Portfolio::where('client_id', '=', $user->client_id)
-//                        ->where('admin_id', '!=', $user->admin_id)
-//                        ->where('parent_id', '!=', 0)
+//                        ->whereColumn('parent_id', '=', 'id')
                         ->get();
     }
 
@@ -42,15 +41,13 @@ class Portfolio extends Model
         return Portfolio::where('client_id', '=', 0)->get();
     }
 
-    public function findPortfolio($id)
+    public function getAllParentPorfolios()
     {
-        return Portfolio::where('client_id', '=', $id)->first();
+        return Portfolio::where('parent_id', '=', 0)->get();
     }
 
-    public function findParentPortfolio($id)
+    public function getParentPortfolio($data)
     {
-        return Portfolio::where('client_id', '=', $id)
-                        ->where('admin_id', '!=', 1)
-                        ->where('admin_id', '!=', Auth::id())->first();
+        return Portfolio::where('id', '=', $data['parent_id'])->first();
     }
 }
