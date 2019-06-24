@@ -76,9 +76,9 @@ class PortfolioController extends Controller
             $newPortfolio['client_id'] = $admin['client_id'];
         }
 
-        $this->portfolio->create($newPortfolio);
+        $portfolio = $this->portfolio->create($newPortfolio);
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'portfolio' => $portfolio]);
     }
 
     public function findPortfolio(Request $request)

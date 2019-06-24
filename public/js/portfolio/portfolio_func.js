@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     let portfilioList = $('#portfolioList').DataTable({
         // responsive: true,
@@ -19,11 +19,12 @@ $(document).ready(function() {
         ],
     });
 
-    $('#addPortfolio').on('click', function() {
+    $('#addPortfolio').on('click', function () {
         $('#addPortfolioModal').modal('show');
     });
 
-    $('#addPortfolioSubmit').on('click', function() {
+    $('#addPortfolioSubmit').on('click', function () {
+        $('.selectpicker').selectpicker('refresh');
         clearValidation();
         let portfolioParentId = $('#portfolioParent option:selected').attr('id-parent'),
             portfolioParentName = $('#portfolioParent option:selected').text(),
@@ -47,7 +48,7 @@ $(document).ready(function() {
                 portfolioAllocationMin: portfolioAllocationMin,
                 portfolioSortOrder: portfolioSortOrder
             },
-            error: function(error) {
+            error: function (error) {
                 if (error.responseJSON.errors) {
                     let errors = error.responseJSON.errors;
                     $.each(errors, function (index, value) {
@@ -62,7 +63,8 @@ $(document).ready(function() {
                     })
                 }
             },
-            success: function(data) {
+            success: function (data) {
+
                 if (data.success === true) {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -75,7 +77,11 @@ $(document).ready(function() {
                         type: 'success',
                         title: 'Created successfully'
                     });
-                    $('.selectpicker').selectpicker('refresh');
+
+                    if(data.portfolio['parent_id'] == 0) {
+                        $("#portfolioParent").append('<option id-parent="' + data.portfolio['id'] + '">' + data.portfolio['name'] + '</option>').selectpicker("refresh");
+                    }
+
                     $('#addPortfolioModal').modal('hide');
                     clearModalInput();
                     portfilioList.ajax.reload();
@@ -93,26 +99,26 @@ $(document).ready(function() {
             data: {
                 portfolioId: portfolioId
             },
-            error: function(error) {
+            error: function (error) {
                 Swal.fire({
                     title: 'Something went wrong!',
                     text: 'Please, reload the page.',
                     type: 'error',
                 })
             },
-            success: function(data) {
-                if(data.error) {
+            success: function (data) {
+                if (data.error) {
                     console.log(data.error)
                 } else {
                     $('#editPortfolioId').val(data.portfolioInfo['id']);
-                    if(data.parentPortfolioInfo === null) {
+                    if (data.parentPortfolioInfo === null) {
                         $('#editPortfolioNewParent').prop('disabled', true)
-                                                .selectpicker('refresh')
-                                                .selectpicker('val', data.portfolioInfo['name']);
+                            .selectpicker('refresh')
+                            .selectpicker('val', data.portfolioInfo['name']);
                     } else {
                         $('#editPortfolioNewParent').prop('disabled', false)
-                                                .selectpicker('refresh')
-                                                .selectpicker('val', data.parentPortfolioInfo['name']);
+                            .selectpicker('refresh')
+                            .selectpicker('val', data.parentPortfolioInfo['name']);
                     }
                     $('#editPortfolioName').val(data.portfolioInfo['name']);
                     $('#editPortfolioDescription').val(data.portfolioInfo['description']);
@@ -127,7 +133,7 @@ $(document).ready(function() {
         })
     });
 
-    $('#editPortfolioSubmit').on('click', function() {
+    $('#editPortfolioSubmit').on('click', function () {
         clearValidation();
         let portfolioId = $('#editPortfolioId').val(),
             parentPortfolioId = $('#editPortfolioNewParent option:selected').attr('id-parent'),
@@ -153,7 +159,7 @@ $(document).ready(function() {
                 editPortfolioSortOrder: editPortfolioSortOrder,
                 editPortfolioIsActive: editPortfolioIsActive
             },
-            error: function(error) {
+            error: function (error) {
                 if (error.responseJSON.errors) {
                     let errors = error.responseJSON.errors;
                     $.each(errors, function (index, value) {
@@ -168,7 +174,7 @@ $(document).ready(function() {
                     })
                 }
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.success === true) {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -189,7 +195,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#deletePortfolioSubmit').on('click', function() {
+    $('#deletePortfolioSubmit').on('click', function () {
         let portfolioId = $('#editPortfolioId').val();
 
         Swal.fire({
@@ -208,14 +214,14 @@ $(document).ready(function() {
                     data: {
                         portfolioId: portfolioId
                     },
-                    error: function(error) {
+                    error: function (error) {
                         Swal.fire({
                             title: 'Something went wrong!',
                             text: 'Please, reload the page.',
                             type: 'error',
                         })
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.success === true) {
                             const Toast = Swal.mixin({
                                 toast: true,
