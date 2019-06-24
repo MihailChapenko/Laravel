@@ -12,11 +12,12 @@
                 <div id="portfolioParentDiv" class="form-group">
                     <label for="portfolioParent">Top Portfolio</label>
                     <select id="portfolioParent" class="form-control modal-input selectpicker">
-                        @role('super-admin')
-                            <option id-parent="0" selected>Top Portfolio</option>
-                        @else
-                            <option selected>Choose parent portfolio...</option>
-                        @endrole
+{{--                        @role('super-admin')--}}
+{{--                            --}}
+{{--                        @else--}}
+{{--                            <option selected>Choose parent portfolio...</option>--}}
+                        <option id-parent="0" selected>Parent Portfolio</option>
+{{--                        @endrole--}}
                         @foreach($parentPortfolios as $item)
                             <option id-parent="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
