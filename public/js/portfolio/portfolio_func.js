@@ -28,6 +28,7 @@ $(document).ready(function () {
         clearValidation();
         let portfolioParentId = $('#portfolioParent option:selected').attr('id-parent'),
             portfolioParentName = $('#portfolioParent option:selected').text(),
+            portfolioClientId = $('#portfolioParent option:selected').attr('id-client'),
             portfolioName = $('#portfolioName').val(),
             portfolioDescription = $('#portfolioDescription').val(),
             portfolioCurrency = $('#portfolioCurrency').val(),
@@ -39,14 +40,15 @@ $(document).ready(function () {
             type: 'post',
             url: 'add_portfolio',
             data: {
-                portfolioParentId: portfolioParentId,
-                portfolioParentName: portfolioParentName,
                 portfolioName: portfolioName,
-                portfolioDescription: portfolioDescription,
+                portfolioParentId: portfolioParentId,
                 portfolioCurrency: portfolioCurrency,
+                portfolioClientId: portfolioClientId,
+                portfolioSortOrder: portfolioSortOrder,
+                portfolioParentName: portfolioParentName,
+                portfolioDescription: portfolioDescription,
                 portfolioAllocationMax: portfolioAllocationMax,
                 portfolioAllocationMin: portfolioAllocationMin,
-                portfolioSortOrder: portfolioSortOrder
             },
             error: function (error) {
                 if (error.responseJSON.errors) {
@@ -78,10 +80,8 @@ $(document).ready(function () {
                         title: 'Created successfully'
                     });
 
-                    if(data.portfolio['parent_id'] == 0) {
-                        $("#portfolioParent").append('<option id-parent="' + data.portfolio['id'] + '">' + data.portfolio['name'] + '</option>').selectpicker("refresh");
-                    }
-
+                    $("#portfolioParent").append('<option id-parent="' + data.portfolio['id'] + '" id-client="' +
+                        data.portfolio['client_id'] + '" >' + data.portfolio['name'] + '</option>').selectpicker("refresh");
                     $('#addPortfolioModal').modal('hide');
                     clearModalInput();
                     portfilioList.ajax.reload();

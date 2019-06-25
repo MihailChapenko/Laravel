@@ -32,7 +32,8 @@ class PortfolioController extends Controller
     public function index()
     {
         $currency = $this->currency->all();
-        $parentPortfolios = $this->portfolio->getAllParentPorfolios();
+//        $parentPortfolios = $this->portfolio->getAllParentPorfolios();
+        $parentPortfolios = $this->portfolio->all();
 
         return view('portfolio.info_portfolio', compact('currency', 'parentPortfolios'));
     }
@@ -67,13 +68,17 @@ class PortfolioController extends Controller
             'is_active' => 1
         ];
 
-        if(Auth::id() === 1)
+        if($request->input('portfolioClientId') != 0)
         {
-            $newPortfolio['client_id'] = 0;
+            $newPortfolio['client_id'] = $request->input('portfolioClientId');
+        }
+        else if($admin->client_id != 0)
+        {
+            $newPortfolio['client_id'] = $admin->client_id;
         }
         else
         {
-            $newPortfolio['client_id'] = $admin['client_id'];
+            $newPortfolio['client_id'] = 0;
         }
 
         $portfolio = $this->portfolio->create($newPortfolio);

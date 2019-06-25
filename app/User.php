@@ -53,6 +53,7 @@ class User extends Authenticatable
         return User::join('users_profile', 'users_profile.user_id', '=', 'users.id')
                     ->select('users.id', 'users.name', 'users.email', 'users_profile.is_admin')
                     ->where('users_profile.client_id', '=', $user->client_id)
+                    ->where('users.id', '!=', 1)
                     ->get();
     }
 

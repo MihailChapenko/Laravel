@@ -38,7 +38,8 @@ class Portfolio extends Model
 
     public function getAvailablePortfolio()
     {
-        return Portfolio::where('client_id', '=', 0)->get();
+        return Portfolio::where('client_id', '=', 0)
+                        ->where('parent_id', '=', 0)->get();
     }
 
     public function getAllParentPorfolios()
