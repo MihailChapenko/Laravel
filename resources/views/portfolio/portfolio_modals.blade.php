@@ -9,9 +9,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="portfolioParentDiv" class="form-group">
-                    <label for="portfolioParent">Top Portfolio</label>
-                    <select id="portfolioParent" class="form-control modal-input selectpicker">
+                <div id="portfolioParentIdDiv" class="form-group">
+                    <label for="portfolioParentId">Top Portfolio</label>
+                    <select id="portfolioParentId" class="form-control modal-input selectpicker">
                         <option selected>Choose parent portfolio...</option>
                         @role('super-admin')
                             <option id-parent="0" id-client="0">Parent Portfolio</option>

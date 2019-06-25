@@ -26,8 +26,8 @@ $(document).ready(function () {
     $('#addPortfolioSubmit').on('click', function () {
         $('.selectpicker').selectpicker('refresh');
         clearValidation();
-        let portfolioParentId = $('#portfolioParent option:selected').attr('id-parent'),
-            portfolioParentName = $('#portfolioParent option:selected').text(),
+        let portfolioParentId = $('#portfolioParentId option:selected').attr('id-parent'),
+            portfolioParentName = $('#portfolioParentId option:selected').text(),
             portfolioClientId = $('#portfolioParent option:selected').attr('id-client'),
             portfolioName = $('#portfolioName').val(),
             portfolioDescription = $('#portfolioDescription').val(),

@@ -42,10 +42,10 @@ class Portfolio extends Model
                         ->where('parent_id', '=', 0)->get();
     }
 
-    public function getAllParentPorfolios()
-    {
-        return Portfolio::where('parent_id', '=', 0)->get();
-    }
+//    public function getAllParentPorfolios()
+//    {
+//        return Portfolio::where('parent_id', '=', 0)->get();
+//    }
 
     public function getParentPortfolio($data)
     {
