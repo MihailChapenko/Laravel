@@ -80,7 +80,7 @@ $(document).ready(function () {
                         title: 'Created successfully'
                     });
 
-                    $("#portfolioParent").append('<option id-parent="' + data.portfolio['id'] + '" id-client="' +
+                    $("#portfolioParentId").append('<option id-parent="' + data.portfolio['id'] + '" id-client="' +
                         data.portfolio['client_id'] + '" >' + data.portfolio['name'] + '</option>').selectpicker("refresh");
                     $('#addPortfolioModal').modal('hide');
                     clearModalInput();

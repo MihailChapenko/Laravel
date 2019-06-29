@@ -24,16 +24,21 @@ class Portfolio extends Model
         'sort_order', 'is_active', 'admin_id', 'parent_name'
     ];
 
+    public function getAllPortfolios()
+    {
+        return Portfolio::all();
+    }
+
     public function getPortfoliosList($user)
     {
-        if(Auth::id() === 1)
-        {
-            return Portfolio::all();
-        }
-
         return Portfolio::where('client_id', '=', $user->client_id)
-//                        ->whereColumn('parent_id', '=', 'id')
                         ->get();
+    }
+
+    public function findTopPortfolioForAdmin($clientId)
+    {
+        return Portfolio::where('client_id', '=', $clientId)
+                        ->where('parent_id', '=', 0)->first();
     }
 
     public function getAvailablePortfolio()
@@ -42,13 +47,14 @@ class Portfolio extends Model
                         ->where('parent_id', '=', 0)->get();
     }
 
-//    public function getAllParentPorfolios()
-//    {
-//        return Portfolio::where('parent_id', '=', 0)->get();
-//    }
-
-    public function getParentPortfolio($data)
+    public function getAllClientPortfolios($user)
     {
-        return Portfolio::where('id', '=', $data['parent_id'])->first();
+        return Portfolio::where('client_id', '=', $user->client_id)
+                        ->get();
+    }
+
+    public function findParentPortfolio($id)
+    {
+        return Portfolio::find($id);
     }
 }

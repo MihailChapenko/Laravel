@@ -13,7 +13,7 @@
                     <label for="portfolioParentId">Top Portfolio</label>
                     <select id="portfolioParentId" class="form-control modal-input selectpicker">
                         <option selected>Choose parent portfolio...</option>
-                        @role('super-admin')
+                        @role('super-admin|admin')
                             <option id-parent="0" id-client="0">Parent Portfolio</option>
                         @endrole
                         @foreach($parentPortfolios as $item)

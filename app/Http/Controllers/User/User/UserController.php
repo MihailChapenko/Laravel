@@ -82,6 +82,7 @@ class UserController extends Controller
                 'is_admin' => true,
                 'admin_id' => Auth::id()
             ]);
+            $user->assignRole('admin');
         }
         else
         {
