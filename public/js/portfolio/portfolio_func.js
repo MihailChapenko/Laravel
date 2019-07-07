@@ -111,14 +111,14 @@ $(document).ready(function () {
                     console.log(data.error)
                 } else {
                     $('#editPortfolioId').val(data.portfolioInfo['id']);
-                    if (data.parentPortfolioInfo === null) {
+                    if (data.portfolioInfo.parent_id === 0) {
                         $('#editPortfolioNewParent').prop('disabled', true)
                             .selectpicker('refresh')
                             .selectpicker('val', data.portfolioInfo['name']);
                     } else {
                         $('#editPortfolioNewParent').prop('disabled', false)
                             .selectpicker('refresh')
-                            .selectpicker('val', data.parentPortfolioInfo['name']);
+                            .selectpicker('val', data.portfolioInfo.parent_name);
                     }
                     $('#editPortfolioName').val(data.portfolioInfo['name']);
                     $('#editPortfolioDescription').val(data.portfolioInfo['description']);
